@@ -22,6 +22,18 @@ class TodosListDetailApiView(RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         return TodosList.objects.filter(owner=self.request.user)
 
+class TodosListBriefView(GenericAPIView):
+    """GET - List Of All Todos in TodoList."""
+    serializer_class = TodosSerializer
+    permission_classes = (IsAuthenticated, )
+    def get(self, request, pk):
+        check_todo_list = TodosList.objects.filter(pk=pk, owner=self.request.user)
+        if check_todo_list.exists():
+            all_todos = Todos.objects.filter(todo_list=check_todo_list[0])
+            serializer = self.serializer_class(all_todos, many=True)
+            return response.Response({'data':serializer.data}, status=status.HTTP_200_OK)
+        return response.Response({'error':"No such Todoslist"}, status=status.HTTP_400_BAD_REQUEST)
+
 class TodosApiView(ListCreateAPIView):
     """GET POST- List and Create Todos data."""
     serializer_class = TodosSerializer
@@ -43,7 +55,7 @@ class TodosApiView(ListCreateAPIView):
     def get_queryset(self):
         todolist = TodosList.objects.filter(owner=self.request.user)
         if todolist.exists():
-            return Todos.objects.filter(todo_list=todolist[0])
+            return Todos.objects.filter(todo_list__in=todolist)
 
 class TodosDetailApiView(RetrieveUpdateDestroyAPIView):
     """PUT DELETE RETRIEVE- Get, Update and Delete particular Todos data.."""

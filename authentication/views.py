@@ -14,7 +14,7 @@ class RegisterAPiView(GenericAPIView):
         if serializer.is_valid():
             serializer.save()
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)
-        return response.Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
+        return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LoginApiView(GenericAPIView):
@@ -25,16 +25,14 @@ class LoginApiView(GenericAPIView):
         username = data.get('username', '')
         password = data.get('password', '')
         user = auth.authenticate(username=username, password=password)
-
+        print(user)
         if user:
             auth_token = jwt.encode(
                 {'username':user.username},
                 settings.SECRET_KEY,
                 algorithm='HS256'
             )
-            serializer = self.serializer_class(data=user)
-            data = {'user':serializer.data, 'token':auth_token}
+            data = {'username':user.username, 'token':auth_token}
             return response.Response(data, status=status.HTTP_200_OK)
-
         return response.Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 

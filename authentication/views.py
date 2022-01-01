@@ -1,7 +1,7 @@
 from django.conf import settings
 from rest_framework.generics import GenericAPIView
 from authentication.serializers import RegisterSerializer, LoginSerializer
-from rest_framework import serializers, status, response
+from rest_framework import status, response
 from django.contrib import auth
 import jwt
 from django.conf import settings

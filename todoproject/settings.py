@@ -44,6 +44,16 @@ INSTALLED_APPS = [
     'todoapp',
 ]
 
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS':{
+        "Auth Token [Bearer Token]":{
+            "type":"apiKey",
+            "name":"Authorization",
+            "in":"header"
+        }
+    }
+}
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'authentication.jwtbackend.JWTAuthentication',

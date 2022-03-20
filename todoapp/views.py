@@ -13,7 +13,10 @@ class TodosListApiView(ListCreateAPIView):
         serializer.save(owner=self.request.user)
 
     def get_queryset(self):
-        return TodosList.objects.filter(Q(owner=self.request.user) | Q(shared_owner__id=self.request.user.id))
+        try:
+            return TodosList.objects.filter(Q(owner=self.request.user) | Q(shared_owner__id=self.request.user.id))
+        except:
+            return None
 
 class TodosListDetailApiView(RetrieveUpdateDestroyAPIView):
     """PUT DELETE RETRIEVE- Get, Update and Delete particular TodosList data."""

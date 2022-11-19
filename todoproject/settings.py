@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-7)%^x=zqxe_i*!k-)2q*me0@ips8=nska1&n4!*4881cvp1p2+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['falakfatma.pythonanywhere.com', '*']
 
 
 # Application definition
@@ -75,6 +75,7 @@ MIDDLEWARE = [
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
+    '*',
 ]
 
 ROOT_URLCONF = 'todoproject.urls'

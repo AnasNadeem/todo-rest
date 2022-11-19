@@ -25,7 +25,6 @@ class LoginApiView(GenericAPIView):
         username = data.get('username', '')
         password = data.get('password', '')
         user = auth.authenticate(username=username, password=password)
-        print(user)
         if user:
             auth_token = jwt.encode(
                 {'username':user.username},
@@ -34,5 +33,4 @@ class LoginApiView(GenericAPIView):
             )
             data = {'username':user.username, 'token':auth_token}
             return response.Response(data, status=status.HTTP_200_OK)
-        return response.Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-
+        return response.Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)

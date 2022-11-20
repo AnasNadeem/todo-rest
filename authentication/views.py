@@ -1,10 +1,14 @@
-from django.conf import settings
-from rest_framework.generics import GenericAPIView
-from authentication.serializers import RegisterSerializer, LoginSerializer
-from rest_framework import status, response
-from django.contrib import auth
 import jwt
+
 from django.conf import settings
+from django.contrib import auth
+from rest_framework.generics import GenericAPIView
+from rest_framework import status, response
+from authentication.serializers import (
+    RegisterSerializer,
+    LoginSerializer,
+    UserSerializer,
+)
 
 
 class RegisterAPiView(GenericAPIView):
@@ -32,6 +36,6 @@ class LoginApiView(GenericAPIView):
                 settings.SECRET_KEY,
                 algorithm='HS256'
             )
-            data = {'user':user, 'token':auth_token}
+            data = {'user':UserSerializer(user), 'token':auth_token}
             return response.Response(data, status=status.HTTP_200_OK)
         return response.Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)

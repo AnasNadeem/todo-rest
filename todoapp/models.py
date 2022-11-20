@@ -10,6 +10,7 @@ class TodosList(models.Model):
     def __str__(self):
         return f"{self.name}-{self.owner.username}"
 
+
 class Todos(models.Model):
     name = models.CharField(max_length=255)
     is_completed = models.BooleanField(default=False)

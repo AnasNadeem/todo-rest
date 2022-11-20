@@ -1,16 +1,16 @@
-from django.urls import path
-from todoapp.views import (
-    TodosListApiView, 
-    TodosListDetailApiView,
-    TodosApiView,
-    TodosDetailApiView,
-    TodosListBriefView
+from .views import (
+    TodosListViewset,
+    TodosViewset,
 )
+from rest_framework import routers
+from rest_framework.urlpatterns import format_suffix_patterns
 
-urlpatterns = [
-    path('todoslist/', TodosListApiView.as_view()),
-    path('todoslist/<int:pk>', TodosListDetailApiView.as_view()),
-    path('todoslistall/<int:pk>', TodosListBriefView.as_view()),
-    path('todos/', TodosApiView.as_view()),
-    path('todos/<int:pk>', TodosDetailApiView.as_view()),
-]
+
+router = routers.SimpleRouter(trailing_slash=False)
+router.register(r"todoslist", TodosListViewset, basename="todoslist")
+router.register(r"todos", TodosViewset, basename="todos")
+
+urlpatterns = []
+
+urlpatterns += router.urls
+urlpatterns = format_suffix_patterns(urlpatterns)

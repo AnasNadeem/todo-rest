@@ -1,10 +1,12 @@
 from todoapp.models import TodosList, Todos
 from rest_framework.serializers import ModelSerializer
 
+
 class TodosListSerializer(ModelSerializer):
     class Meta:
         model = TodosList
         fields = ('id', 'name', 'shared_owner')
+
 
 class TodosSerializer(ModelSerializer):
     class Meta:

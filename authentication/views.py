@@ -6,6 +6,7 @@ from django.contrib import auth
 import jwt
 from django.conf import settings
 
+
 class RegisterAPiView(GenericAPIView):
     serializer_class = RegisterSerializer
 
@@ -31,6 +32,6 @@ class LoginApiView(GenericAPIView):
                 settings.SECRET_KEY,
                 algorithm='HS256'
             )
-            data = {'username':user.username, 'token':auth_token}
+            data = {'user':user, 'token':auth_token}
             return response.Response(data, status=status.HTTP_200_OK)
         return response.Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)

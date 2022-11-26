@@ -5,7 +5,7 @@ from rest_framework.serializers import ModelSerializer
 class TodosListSerializer(ModelSerializer):
     class Meta:
         model = TodosList
-        fields = ('id', 'name', 'shared_owner')
+        fields = '__all__'
 
 
 class TodosSerializer(ModelSerializer):

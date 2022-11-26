@@ -29,13 +29,15 @@ class LoginApiView(GenericAPIView):
         data = request.data
         username = data.get('username', '')
         password = data.get('password', '')
+
         user = auth.authenticate(username=username, password=password)
-        if user:
-            auth_token = jwt.encode(
-                {'username':user.username},
-                settings.SECRET_KEY,
-                algorithm='HS256'
-            )
-            data = {'user':UserSerializer(user), 'token':auth_token}
-            return response.Response(data, status=status.HTTP_200_OK)
-        return response.Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
+        if not user:
+            return response.Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
+
+        auth_token = jwt.encode(
+            {'username':user.username},
+            settings.SECRET_KEY,
+            algorithm='HS256'
+        )
+        data = {'user': user, 'token': auth_token}
+        return response.Response(data, status=status.HTTP_200_OK)

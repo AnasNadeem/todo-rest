@@ -39,5 +39,6 @@ class LoginApiView(GenericAPIView):
             settings.SECRET_KEY,
             algorithm='HS256'
         )
-        data = {'user': user, 'token': auth_token}
-        return response.Response(data, status=status.HTTP_200_OK)
+        user_data = UserSerializer(user).data
+        user_data['token'] = auth_token
+        return response.Response(user_data, status=status.HTTP_200_OK)

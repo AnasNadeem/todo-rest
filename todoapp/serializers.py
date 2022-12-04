@@ -9,11 +9,13 @@ class TodosListSerializer(ModelSerializer):
 
 
 class TodosSerializer(ModelSerializer):
+    todo_list = TodosListSerializer()
+
     class Meta:
         model = Todos
         fields = '__all__'
 
-    def to_representation(self, instance):
-        response = super().to_representation(instance)
-        response['todo_list'] = TodosListSerializer(instance.todo_list).data
-        return response
+    # def to_representation(self, instance):
+    #     response = super().to_representation(instance)
+    #     response['todo_list'] = TodosListSerializer(instance.todo_list).data
+    #     return response

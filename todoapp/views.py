@@ -37,7 +37,7 @@ class TodosViewset(ModelViewSet):
             todo_list = TodosList.objects.filter(Q(owner=self.request.user) | Q(shared_owner__id=self.request.user.id),pk=todo_list_num)
             if todo_list.exists():
                 serializer.save()
-                return response.Response({'success':"Todo created."}, status=status.HTTP_201_CREATED)
+                return response.Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
                 return response.Response({'error':"No such todo_list exists"}, status=status.HTTP_400_BAD_REQUEST)
         return response.Response({'error':"Invalid data"}, status=status.HTTP_400_BAD_REQUEST)

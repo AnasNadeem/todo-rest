@@ -42,9 +42,13 @@ class TodosViewset(ModelViewSet):
                 return response.Response({'error':"No such todo_list exists"}, status=status.HTTP_400_BAD_REQUEST)
         return response.Response({'error':"Invalid data"}, status=status.HTTP_400_BAD_REQUEST)
 
-    # def get_queryset(self):
-    #     user = self.request.user
-    #     if not user.is_authenticated:
-    #         return TodosList.objects.none()
-    #     todoslist = TodosList.objects.filter(Q(owner=self.request.user) | Q(shared_owner__id=self.request.user.id))
-    #     return Todos.objects.all()
+    def get_queryset(self):
+        user = self.request.user
+        if not user.is_authenticated:
+            return Todos.objects.none()
+        todolists = TodosList.objects.filter(Q(owner=self.request.user) | Q(shared_owner__id=self.request.user.id))
+        all_todos = Todos.objects.none()
+        for todolist in todolists:
+            todos = todolist.todos_set.all()
+            all_todos = all_todos | todos
+        return all_todos

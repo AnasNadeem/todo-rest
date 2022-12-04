@@ -4,11 +4,14 @@ from todoapp.models import TodosList, Todos
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
+from django_filters import rest_framework as filters
 
 
 class TodosListViewset(ModelViewSet):
     serializer_class = TodosListSerializer
     permission_classes = (IsAuthenticated, )
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ('name', 'owner',)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -23,6 +26,8 @@ class TodosListViewset(ModelViewSet):
 class TodosViewset(ModelViewSet):
     serializer_class = TodosSerializer
     permission_classes = (IsAuthenticated, )
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ('name', 'is_completed', 'todo_list',)
 
     def create(self, request):
         serializer = self.serializer_class(data=request.data)

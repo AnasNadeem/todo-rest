@@ -46,9 +46,10 @@ class TodosViewset(ModelViewSet):
         user = self.request.user
         if not user.is_authenticated:
             return Todos.objects.none()
-        todolists = TodosList.objects.filter(Q(owner=self.request.user) | Q(shared_owner__id=self.request.user.id))
-        all_todos = Todos.objects.none()
-        for todolist in todolists:
-            todos = todolist.todos_set.all()
-            all_todos = all_todos | todos
-        return all_todos
+        return Todos.objects.all()
+        # todolists = TodosList.objects.filter(Q(owner=self.request.user) | Q(shared_owner__id=self.request.user.id))
+        # all_todos = Todos.objects.none()
+        # for todolist in todolists:
+        #     todos = todolist.todos_set.all()
+        #     all_todos = all_todos | todos
+        # return all_todos
